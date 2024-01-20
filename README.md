@@ -13,9 +13,9 @@ A web app in which users can upload and rate popular study spots on campus.
 
 
 ## Technologies:
-Front-end: React
-Back-end: Node.js
-Database: MongoDB.
+- Front-end: React
+- Back-end: Node.js
+- Database: MongoDB
 
 ## Design the Database:
 ```
