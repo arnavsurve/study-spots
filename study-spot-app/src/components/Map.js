@@ -3,6 +3,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import UserLocation from './UserLocation';
 import ConfirmModal from './ConfirmModal';
 import axios from 'axios';
+import SpotMarkers from './SpotMarkers';
 
 const Map = () => {
   const [userLocation, setUserLocation] = useState(null);
@@ -72,6 +73,7 @@ const Map = () => {
         onConfirm={onConfirm}
         onCancel={() => setShowModal(false)}
       />
+      <SpotMarkers />
     </LoadScript>
   );
 };
