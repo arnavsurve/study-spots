@@ -106,6 +106,6 @@ app.post('/api/spots', async (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, "10.186.69.69", () => {
+app.listen(PORT, "127.0.0.1", () => {
     console.log(`Server is running on port ${PORT}`);
 });
