@@ -105,6 +105,21 @@ app.post('/api/spots', async (req, res) => {
     }
 });
 
+app.post('/api/spots/update-busy-index/:spotId', async (req, res) => {
+    try {
+        const { spotId } = req.params;
+        const { newBusyIndex } = req.body;
+
+        // Update busy index for the specified spot by spot ID
+        await SpotModel.findByIdAndUpdate(spotId, { $set: { busyIndex: newBusyIndex } });
+
+        res.status(200).json({ message: 'Busy index updated successfully' });
+    } catch (error) {
+        console.error("Error updating busy index:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 // Start the server
 app.listen(PORT, "127.0.0.1", () => {
     console.log(`Server is running on port ${PORT}`);
