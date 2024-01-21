@@ -4,12 +4,14 @@ import UserLocation from './UserLocation';
 import ConfirmModal from './ConfirmModal';
 import axios from 'axios';
 import SpotMarkers from './SpotMarkers';
+import SpotInfo from './SpotInfo';
 
 const Map = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [selectedPoints, setSelectedPoints] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [tempPoint, setTempPoint] = useState(null);
+  const [selectedSpot, setSelectedSpot] = useState(null);
 
   useEffect(() => {
     UserLocation().then(location => setUserLocation(location));
@@ -32,7 +34,7 @@ const Map = () => {
         type: 'study',
         location: {
           type: 'Point',
-          coordinates: [0, 0]
+          coordinates: [tempPoint.lng, tempPoint.lat]
         },
         description: 'new study spot',
         busyIndex: 0,
@@ -60,11 +62,11 @@ const Map = () => {
         onClick={onMapClick} 
         options={{ disableDefaultUI: false}}
       >
-
         <Marker position={center} />
         {selectedPoints.map((point, index) => (
           <Marker key={index} position={point} />
         ))}
+        <SpotMarkers />
       </GoogleMap>
 
       <ConfirmModal
@@ -73,7 +75,6 @@ const Map = () => {
         onConfirm={onConfirm}
         onCancel={() => setShowModal(false)}
       />
-      <SpotMarkers />
     </LoadScript>
   );
 };

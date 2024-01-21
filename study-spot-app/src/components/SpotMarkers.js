@@ -14,7 +14,12 @@ const SpotMarkers = () => {
   return (
     <>
       {spots.map((spot, index) => (
-        <Marker key={index} position={{ lat: spot.lat, lng: spot.lng }} />
+        <Marker key={index}
+            position={{ 
+                lat: spot.location.coordinates[1], 
+                lng: spot.location.coordinates[0] 
+            }} 
+        />
       ))}
     </>
   );
