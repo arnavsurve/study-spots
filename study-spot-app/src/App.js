@@ -10,9 +10,12 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+      </header>
+
+      <h1>SpotFinda BITCHHHHHHHHHHH</h1>
+      <h3>Click on the map to submit a new spot!</h3>
 
       <Map spotsData={studySpots} />
-      </header>
     </div>
   );
 }

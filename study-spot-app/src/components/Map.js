@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-// import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import UserLocation from './UserLocation';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import UserLocation from './UserLocation';
+import ConfirmModal from './ConfirmModal';
 
 const Map = () => {
   const [userLocation, setUserLocation] = useState(null);
+  const [selectedPoints, setSelectedPoints] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [tempPoint, setTempPoint] = useState(null);
 
   useEffect(() => {
     UserLocation().then(location => setUserLocation(location));
@@ -17,28 +20,41 @@ const Map = () => {
   const center = { lat: userLocation[0], lng: userLocation[1] };
   const zoom = 15; // default zoom level
 
+  const onMapClick = (event) => {
+    setTempPoint({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+    setShowModal(true);
+  };
+
+  const onConfirm = () => {
+    setSelectedPoints(current => [...current, tempPoint]);
+    setShowModal(false);
+  }
+
   return (
     <LoadScript googleMapsApiKey="AIzaSyC8DB-8dU06g4iUL84peKG3NtNhtlOkmKM">
-      <GoogleMap mapContainerStyle={{ height: '500px', width: '60%' }} center={center} zoom={zoom}>
+      <GoogleMap 
+        mapContainerStyle={{ height: '500px', width: '60%' }} 
+        center={center} 
+        zoom={zoom} 
+        onClick={onMapClick} 
+        options={{ disableDefaultUI: false}}
+      >
+
         <Marker position={center} />
+        {selectedPoints.map((point, index) => (
+          <Marker key={index} position={point} />
+        ))}
       </GoogleMap>
+
+      <ConfirmModal
+        isOpen={showModal}
+        tempPoint={tempPoint}
+        onConfirm={onConfirm}
+        onCancel={() => setShowModal(false)}
+      />
     </LoadScript>
   );
 };
-
-//   return (
-//     <MapContainer center={userLocation} zoom={15} style={{ height: '400px', width: '100%' }}>
-//       <TileLayer
-//         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-//         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-//       />
-// 
-//       <Marker position={userLocation}>
-//         <Popup>You are here</Popup>
-//       </Marker>
-// 
-//     </MapContainer>
-//   );
 
 
 export default Map;
