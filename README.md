@@ -1,7 +1,7 @@
 # SpotFinda
 A web app in which users can upload and rate popular study spots on campus.
 
-### The basics
+## The basics
 - Will have a map with pinpoints describing where popular spots are. 
 - Can click on the pinpoints to view more detail about the spot. 
 - Also will be an add button so users can upload spots. 
@@ -13,9 +13,9 @@ A web app in which users can upload and rate popular study spots on campus.
 
 
 ## Technologies:
-Front-end: React
-Back-end: Node.js
-Database: MongoDB.
+- Front-end: React
+- Back-end: Node.js
+- Database: MongoDB
 
 ## Design the Database:
 ```
@@ -27,15 +27,15 @@ description (String)
 busyIndex(int 1-5)
 ```
 
-### API Endpoints:
+## API Endpoints:
 
-#### Spot Operations:
+### Spot Operations:
 
 - GET /api/spots: Get a list of all spots within 1 mile radius.
 - GET /api/spots/spotId: Get details of a specific spot.
 - POST /api/spots: Add a new spot 
 
-#### Other:
+### Other:
 
 - PUT /api/spots/:spotId: Update details of a specific spot 
 - DELETE /api/spots/:spotId: Delete a spot (requires authentication and ownership).
