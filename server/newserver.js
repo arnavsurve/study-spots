@@ -31,7 +31,7 @@ const spotSchema = new mongoose.Schema({
 const SpotModel = mongoose.model("Spot", spotSchema, "Spots");
 
 // Connect to the database
-mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(DATABASE_URL);
 
 mongoose.connection.once("open", () => {
     console.log("Connected to the database!");
@@ -43,6 +43,9 @@ mongoose.connection.once("open", () => {
 app.use(express.json());
 
 // API Endpoints for Spot Operations
+
+//finds all spots in a specific location (1 mile radius)
+//req- long and lat
 app.get('/api/spots', async (req, res) => {
     try {
         // Assuming req.query.longitude and req.query.latitude are provided
@@ -67,13 +70,15 @@ app.get('/api/spots', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
-
+//gets a specific spot info from Mongo
+//req- spotID
 app.get('/api/spots/:spotId', async (req, res) => {
     try {
         const spot = await SpotModel.findById(req.params.spotId);
         if (!spot) {
             res.status(404).json({ error: "Spot not found" });
         } else {
+            console.log('Spot details:', spot);
             res.json(spot);
         }
     } catch (error) {
@@ -81,7 +86,8 @@ app.get('/api/spots/:spotId', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
-
+//creates a spot in Mongo db
+//req = schema info
 app.post('/api/spots', async (req, res) => {
     try {
         const newSpot = new SpotModel(req.body);
@@ -95,6 +101,6 @@ app.post('/api/spots', async (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, "192.168.1.129", () => {
+app.listen(PORT, "10.186.69.69", () => {
     console.log(`Server is running on port ${PORT}`);
 });
