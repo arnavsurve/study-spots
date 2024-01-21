@@ -26,6 +26,7 @@ const spotSchema = new mongoose.Schema({
         max: 5
     }
 });
+spotSchema.index({ location: '2dsphere' });
 
 // Create the Spot model
 const SpotModel = mongoose.model("Spot", spotSchema, "Spots");
@@ -51,6 +52,9 @@ app.get('/api/spots', async (req, res) => {
         // Assuming req.query.longitude and req.query.latitude are provided
         const longitude = parseFloat(req.query.longitude);
         const latitude = parseFloat(req.query.latitude);
+        
+        const typeFilter = req.query.type; // Assuming 'type' is provided in the query parameters
+        const typeCondition = typeFilter ? { type: typeFilter } : {};
 
         const spots = await SpotModel.find({
             location: {
@@ -61,9 +65,10 @@ app.get('/api/spots', async (req, res) => {
                     },
                     $maxDistance: 1609.34 // 1 mile in meters
                 }
-            }
+            },
+             ...typeCondition // Include the type filter condition
         });
-
+        console.log(spots)
         res.json(spots);
     } catch (error) {
         console.error("Error fetching spots:", error);
