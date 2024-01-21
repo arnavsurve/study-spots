@@ -7,8 +7,6 @@ Modal.defaultStyles.content.height = '300px';
 Modal.defaultStyles.content.overflow = 'hidden';
 
 const ConfirmModal = ({ isOpen, tempPoint, onConfirm, onCancel }) => {
-  const zoom = 15; // default zoom level
-
   return (
     <Modal isOpen={isOpen}>
       <div>
