@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import UserLocation from './UserLocation';
 import ConfirmModal from './ConfirmModal';
+import axios from 'axios';
 
 const Map = () => {
   const [userLocation, setUserLocation] = useState(null);
@@ -20,9 +21,28 @@ const Map = () => {
   const center = { lat: userLocation[0], lng: userLocation[1] };
   const zoom = 15; // default zoom level
 
-  const onMapClick = (event) => {
+  const onMapClick = async (event) => {
     setTempPoint({ lat: event.latLng.lat(), lng: event.latLng.lng() });
     setShowModal(true);
+
+    try {
+      const response = await axios.post('http://localhost:8081/api/spots', {
+        name: 'study spot',
+        type: 'study',
+        location: {
+          type: 'Point',
+          coordinates: [0, 0]
+        },
+        description: 'new study spot',
+        busyIndex: 0,
+        busyIndexSum: 0,
+        count: 0
+      });
+  
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onConfirm = () => {
@@ -31,7 +51,7 @@ const Map = () => {
   }
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyC8DB-8dU06g4iUL84peKG3NtNhtlOkmKM">
+    <LoadScript googleMapsApiKey="AIzaSyA5n9CN1Ge45nGmwqnJSWg3emb1A1eDl_8">
       <GoogleMap 
         mapContainerStyle={{ height: '500px', width: '60%' }} 
         center={center} 
