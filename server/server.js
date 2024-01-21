@@ -24,7 +24,9 @@ const spotSchema = new mongoose.Schema({
         type: Number,
         min: 1,
         max: 5
-    }
+    },
+    busyIndexSum: Number,
+    count: Number
 });
 spotSchema.index({ location: '2dsphere' });
 
@@ -111,14 +113,30 @@ app.post('/api/spots/update-busy-index/:spotId', async (req, res) => {
         const { newBusyIndex } = req.body;
 
         // Update busy index for the specified spot by spot ID
-        await SpotModel.findByIdAndUpdate(spotId, { $set: { busyIndex: newBusyIndex } });
-
+        await SpotModel.findByIdAndUpdate(spotId, { $inc: { 'busyIndexSum': newBusyIndex, 'count': 1 } });
+        const { busyIndexSum, count } = await SpotModel.findById(spotId, 'busyIndexSum count');
+        const updatedBusyIndex = count > 0 ? busyIndexSum / count : 0;
+        await SpotModel.findByIdAndUpdate(spotId, { $set: { busyIndex: updatedBusyIndex } });
         res.status(200).json({ message: 'Busy index updated successfully' });
     } catch (error) {
         console.error("Error updating busy index:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+async function resetBusyIndexForAllSpots() {
+    try {
+        // Resetting busy index to a default value (e.g., 0) for all spots
+        await SpotModel.updateMany({}, { $set: { busyIndex: 0, busyIndexSum: 0, count: 0 } });
+        console.log('Busy index reset for all spots');
+    } catch (error) {
+        console.error('Error resetting busy index for all spots:', error);
+    }
+}
+
+// Run the function every hour (3600000 milliseconds)
+setInterval(resetBusyIndexForAllSpots, 3600000);
+
 
 // Start the server
 app.listen(PORT, "127.0.0.1", () => {
