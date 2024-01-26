@@ -2,13 +2,12 @@ import React from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import Modal from 'react-modal';
 
+Modal.setAppElement('#root');
 Modal.defaultStyles.content.width = '300px';
 Modal.defaultStyles.content.height = '300px';
 Modal.defaultStyles.content.overflow = 'hidden';
 
 const ConfirmModal = ({ isOpen, tempPoint, onConfirm, onCancel }) => {
-  const zoom = 15; // default zoom level
-
   return (
     <Modal isOpen={isOpen}>
       <div>

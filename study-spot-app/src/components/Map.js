@@ -11,40 +11,43 @@ const Map = () => {
   const [selectedPoints, setSelectedPoints] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [tempPoint, setTempPoint] = useState(null);
-  const [selectedSpot, setSelectedSpot] = useState(null);
+//  const [selectedSpot, setSelectedSpot] = useState(null);
 
   useEffect(() => {
     UserLocation().then(location => setUserLocation(location));
   }, []);
 
   if (!userLocation) {
-    return <div>Loading...</div>;
+    return <div>Fetching your location...</div>;
   }
 
   const center = { lat: userLocation[0], lng: userLocation[1] };
   const zoom = 15; // default zoom level
 
   const onMapClick = async (event) => {
-    setTempPoint({ lat: event.latLng.lat(), lng: event.latLng.lng() });
-    setShowModal(true);
+    if (event.latLng) {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      setTempPoint({ lat: event.latLng.lat(), lng: event.latLng.lng() });
+      setShowModal(true);
 
-    try {
-      const response = await axios.post('http://localhost:8081/api/spots', {
-        name: 'study spot',
-        type: 'study',
-        location: {
-          type: 'Point',
-          coordinates: [tempPoint.lng, tempPoint.lat]
-        },
-        description: 'new study spot',
-        busyIndex: 0,
-        busyIndexSum: 0,
-        count: 0
-      });
-  
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
+      try {
+        const response = await axios.post('http://localhost:8081/api/spots', {
+          name: 'study spot',
+          type: 'study',
+          location: {
+            type: 'Point',
+            coordinates: [lng, lat]
+          },
+          description: 'new study spot',
+          busyIndex: 0,
+          busyIndexSum: 0,
+          count: 0
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 

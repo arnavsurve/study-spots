@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Marker } from '@react-google-maps/api';
 
-const SpotMarkers = () => {
-  const [spots, setSpots] = useState([]);
+const SpotMarkers = ({ initialSpots }) => {
+  const [spots, setSpots] = useState(initialSpots || []);
 
   useEffect(() => {
     // Fetch spots from your API
-    fetch('/api/spots')
+    fetch('http://localhost:8081/api/spots')
       .then(response => response.json())
-      .then(data => setSpots(data));
+      .then(data => {
+        setSpots(data);
+      });
   }, []);
+
+  useEffect(() => {
+    console.log(spots); // Log the spots data
+  }, [spots]);
 
   return (
     <>

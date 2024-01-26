@@ -2,7 +2,8 @@
 A web app in which users can upload and rate popular study spots on campus.
 
 # TODO:
-- [x] show all existing spots on the map
+- [ ] show all existing spots on the map
+    **IN_PROGRESS**: spots are not persisting across sessions/reloads
 - [ ] click on a particular spot and view a description and other info about the spot
 - [ ] form for submitting spot
     dropdowns for name, type, description
