@@ -1,0 +1,6 @@
+study-spot-app/node_modules/
+study-spot-app/package.json
+study-spot-app/package-lock.json
+backend/node_modules/
+backend/package.json
+backend/package-lock.json
